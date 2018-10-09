@@ -2,6 +2,10 @@ package com.personal.weatherapp.weatherapp.Networking.Model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.personal.weatherapp.weatherapp.Utils.DateUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SevenDaysForecast {
 
@@ -59,6 +63,26 @@ return city;
 
 public void setCity(City city) {
 this.city = city;
+}
+
+public List<Forecast> getFilterdList() {
+    List<Forecast> cleanList= new ArrayList<Forecast>();
+    Boolean found = false;
+
+    for (Forecast forecast : getList()) {
+
+        for (Forecast cleanForecast : cleanList) {
+            if (DateUtils.stringBadFormedDateToGoodFormat(cleanForecast.getDtTxt()).equals(DateUtils.stringBadFormedDateToGoodFormat(forecast.getDtTxt()))){
+                found = true;
+            }
+        }
+        if (!found) {
+            cleanList.add(forecast);
+        }
+        found = false;
+    }
+
+    return cleanList;
 }
 
 }
